@@ -1,0 +1,14 @@
+{% if recipes %}
+     {% for each in recipes %}
+        <a href="/recipes/{{each.id}}/detail/">{{each.recipe_name}}</a>--<a href="/recipes/delete_recipe/{{each.id}}/">
+                                                                    <button>Delete</button></a><br><br>
+     {% endfor %}
+{% else %}
+  <br>
+     <h3> no items to show </h3>
+  <br>
+{% endif %}
+<br>
+   <a href="/recipes/create_recipe/"><button>create</button></a>
+<br>
+<br>
