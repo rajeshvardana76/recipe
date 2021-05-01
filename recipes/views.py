@@ -13,7 +13,9 @@ def create_recipe(request):
 def save_recipe(request):
     Recipes.objects.create(recipe_name=request.POST['name'],
                            ingredients=request.POST['ingredients'],
-                           process=request.POST['process'])
+                           process=request.POST['process'],
+                           images=request.FILES['image'])
+
     return HttpResponseRedirect("/recipes/menu")
 
 def detail(request, recipe_id):
