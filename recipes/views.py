@@ -1,6 +1,34 @@
 from django.shortcuts import render
 from .models import Recipes
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+
+
+def login_page(request):
+    return render(request, "recipes/login.html")
+
+
+def register_page(request):
+    return render(request, "recipes/register.html")
+
+
+def save_data(request):
+    User.objects.create_user(username=request.POST['username'],
+                             password=request.POST['password'],
+                             email=request.POST['email'])
+    return HttpResponseRedirect("/recipes/")
+
+
+def login_status(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect("/recipes/menu/")
+    else:
+        return HttpResponse("<h3>your username and password did not match</h3>")
 
 def menu(request):
     recipes = Recipes.objects.all()
@@ -25,3 +53,7 @@ def detail(request, recipe_id):
 def delete_recipe(request, recipe_id):
     Recipes.objects.get(id=recipe_id).delete()
     return HttpResponseRedirect("/recipes/menu")
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect("/recipes/")
